@@ -1,10 +1,24 @@
 <?php session_start(); ?>
+<?php require_once("pdo_connect.php"); ?>
+<?php
+    $sql = "SELECT * FROM users WHERE name=:name ";
+    $statement = $conn->prepare($sql) ;
+    $statement->bindParam(":name",$name);
 
-<?php if(isset($_POST['userid'])): ?>
-<?php $_SESSION['sess_id'] = session_id(); ?>
-<?php $_SESSION['username'] = $_POST['userid']  ;     //select from database  ?>
-<?php header('refresh:0;index.php');?>
-<?php else: header('refresh:0;form_login.php'); ?>
-<?php endif; ?>
+    $name  = $_POST['userid'];
+    $statement->execute();
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    $hash_pass = $result[0]['password'];
+    if(password_verify($_POST['pass'],$hash_pass)){
+        $_SESSION['sess_id'] = session_id();
+        $_SESSION['username'] = $result[0]['name'];
+        header('refresh:0;index.php');
+    }else{
+        header('refresh:0;form_login.php'); 
+    }
+?>
+
+
 
 
