@@ -21,4 +21,9 @@
 
 
 
+<?php
+    // TEST User
+    // 1. username "nunta" and password "1234"
+    // 1. username "prom" and password "4321"
 
+?>
